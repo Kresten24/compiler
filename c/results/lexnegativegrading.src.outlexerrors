@@ -1,0 +1,8 @@
+('INVALIDCHAR', '@', 1)
+('INVALIDCHAR', '#', 1)
+('INVALIDCHAR', '$', 1)
+('INVALIDCHAR', "'", 1)
+('INVALIDCHAR', '\\', 1)
+('INVALIDCHAR', '~', 1)
+('INVALIDID', '_abc', 18)
+('INVALIDID', '_1abc', 20)
