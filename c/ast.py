@@ -7,7 +7,7 @@ class Node:
     def __init__(self, data=None):
         self.data = data
         self.parent = None
-        self.left_most_sibiling = None  # left sibiling
+        self.left_most_sibiling = self  # left sibiling
         self.right_sibiling = None  # right sibiling
         self.left_most_child = None
 
@@ -57,7 +57,9 @@ class Node:
             for i in range(0, len(list_children_nodes) - 1):
                 list_children_nodes[i].make_siblings(list_children_nodes[i + 1])
 
-            return node.adopt_children(list_children_nodes[0])
+            node.adopt_children(list_children_nodes[0])
+
+        return node
 
 
 #################################################################

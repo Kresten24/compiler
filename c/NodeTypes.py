@@ -4,15 +4,12 @@ from c.constants.terminals import TerminalEnum
 
 class StartNode(Node):
     def __init__(self, prog=None):
-        self.prog = prog
+        super().__init__()
 
 
 class ProgNode(Node):
     def __init__(self, classDecl=None, funcDef=None, funcBody=None):
-        self.classDecl = classDecl
-        self.funcDef = funcDef
-        self.funcBody = funcBody
-        self.main = TerminalNode(TerminalEnum._main.value)
+        super().__init__()
 
 class ClassDeclNode(Node):
     def __init__(self, inherit=None, classDeclBody=None, classDrcl=None):
@@ -71,6 +68,19 @@ class variableNode(Node):
 
 class functionCallNode(Node):
     pass
+
+class functionDefNode(Node):
+    pass
+
+class methodBodyNode(Node):
+    pass
+
+class statementListNode(Node):
+    pass
+
+class functionNode(Node):
+    pass
+
 
 class idnestNode(Node):
     pass

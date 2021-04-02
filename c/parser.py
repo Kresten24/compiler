@@ -572,6 +572,11 @@ def _factor():
 
 def _func_body():
     stackChecker()
+    method_body_var = methodBodyNode()
+    semantic_stack.append(method_body_var)
+
+    statement_list = statementListNode()
+    semantic_stack.append(statement_list)
     # return match('lcurbr') and _method_body_var() and _statement_list() and match('rcurbr')
     if match('lcurbr'):
         if _method_body_var():
@@ -642,6 +647,11 @@ def _func_declaration_tail():
 
 
 def _func_def():
+    function = functionNode()
+    semantic_stack.append(function)
+
+    func_def = functionDefNode()
+    semantic_stack.append(func_def)
     stackChecker()
     if tokens[tokenIndex][0] in ['func']:
         # return _function() and _func_def()
@@ -1076,7 +1086,8 @@ def _prog():
                 stackChecker()
                 if match('main'):
                     if _func_body():
-                        Node.make_familly(ProgNode(), [class_declaration, func_def, func_body])
+                        progNode = ProgNode()
+                        familly = Node.make_familly(progNode, [class_declaration, func_def, func_body])
                         stackChecker()
                         return True
                     else:
