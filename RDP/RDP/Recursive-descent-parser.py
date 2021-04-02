@@ -1,4 +1,4 @@
-from RDP.TokenTypes import Operator, IntNum
+from TokenTypes import Operator, IntNum
 from ast import Node
 from parseTree import Tree
 

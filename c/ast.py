@@ -5,9 +5,6 @@ i = 0
 class Node:
 
     def __init__(self, data=None):
-        global i
-        i += 1
-        self.id = i
         self.data = data
         self.parent = None
         self.left_most_sibiling = None  # left sibiling
@@ -67,31 +64,31 @@ class Node:
 # Nodes
 #################################################################
 
-class IntNum(Node):
-    def __init__(self, data):
-        self.data = data
-
-
-class IdNode(Node):
-    def __init__(self, data):
-        self.data = data
-
-
-class OpNode(Node):
-    def __init__(self, data):
-        self.data = data
-
-
-class BinaryOpNode:
-    def __init__(self, left_node, op_tok, right_node):
-        self.left_node = left_node
-        self.op_tok = op_tok
-        self.right_node = right_node
-
-    def __repr__(self):
-        return f'({self.left_node}, {self.op_tok}, {self.right_node})'
-
-
-class LeafNode(Node):
-    def __init__(self, token):
-        self.token = token
+# class IntNum(Node):
+#     def __init__(self, data):
+#         self.data = data
+#
+#
+# class IdNode(Node):
+#     def __init__(self, data):
+#         self.data = data
+#
+#
+# class OpNode(Node):
+#     def __init__(self, data):
+#         self.data = data
+#
+#
+# class BinaryOpNode:
+#     def __init__(self, left_node, op_tok, right_node):
+#         self.left_node = left_node
+#         self.op_tok = op_tok
+#         self.right_node = right_node
+#
+#     def __repr__(self):
+#         return f'({self.left_node}, {self.op_tok}, {self.right_node})'
+#
+#
+# class LeafNode(Node):
+#     def __init__(self, token):
+#         self.token = token

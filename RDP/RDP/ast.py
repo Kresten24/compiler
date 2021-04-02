@@ -6,9 +6,6 @@ i = 0
 class Node:
 
     def __init__(self, data=None):
-        global i
-        i += 1
-        self.id = i
         self.data = data
         self.parent = None
         self.left_most_sibiling = None  # left sibiling

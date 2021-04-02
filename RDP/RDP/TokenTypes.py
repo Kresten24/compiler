@@ -1,4 +1,13 @@
-from enum import Enum
+from enum import Enum, auto
+
+#types of syntactical constructs https://youtu.be/4mXbLRH2p1Q?t=1670
+
+
+class MultOpEnum(Enum):
+    _multiply = '*'
+    _divide = '/'
+    _and = 'and'
+
 
 class IntNum(Enum):
     intnum = 'intnum'

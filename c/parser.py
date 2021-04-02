@@ -3,6 +3,8 @@ from constants.terminals import terminal, non_terminals
 from constants.grammar import my_grammar
 from ast import *
 
+from c.NodeTypes import StartNode, ProgNode
+
 testsFolder = 'tests/'
 tokens = list(tokenize(testsFolder + 'polynomial.src'))
 
@@ -70,6 +72,8 @@ def stackChecker():
 
 
 def parse():
+    start = StartNode()
+    semantic_stack.append(start)
     if _start():
         stackChecker()
         if match('EOF'):
@@ -1034,9 +1038,15 @@ def _nested_id():
 
 
 def _prog():
+    prog = semantic_stack.pop()
     stackChecker()
     if tokens[tokenIndex][0] in ['class', 'func', 'main']:
         # return _class_declaration() and _func_def() and match('main') and _func_body()
+
+
+
+
+
         if _class_declaration():
             stackChecker()
             if _func_def():
@@ -1056,9 +1066,14 @@ def _prog():
 
 
 def _start():
+    start = semantic_stack.pop()
     stackChecker()
     if tokens[tokenIndex][0] in ['class', 'func', 'main']:
         # return _prog()
+
+        prog = ProgNode()
+        semantic_stack.append(prog)
+
         if _prog():
             stackChecker()
             return True
@@ -1372,7 +1387,7 @@ def _variable_idnest_tail():
 
 
 #################################################################
-
+semantic_stack = []
 if parse():
     derivation_file.write('success')
     print('success')
