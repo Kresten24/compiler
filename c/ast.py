@@ -52,12 +52,12 @@ class Node:
                 ysibs.parent = self
                 ysibs = ysibs.right_sibiling
 
-    def make_familly(op, list_children_nodes):
+    def make_familly(node, list_children_nodes):
         if list_children_nodes is not None and len(list_children_nodes) >= 2:
             for i in range(0, len(list_children_nodes) - 1):
                 list_children_nodes[i].make_siblings(list_children_nodes[i + 1])
 
-            return Node.makeNode(op).adopt_children(list_children_nodes[0])
+            return node.adopt_children(list_children_nodes[0])
 
 
 #################################################################

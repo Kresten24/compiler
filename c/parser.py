@@ -1,9 +1,8 @@
 from lexer import tokenize
 from constants.terminals import terminal, non_terminals
 from constants.grammar import my_grammar
-from ast import *
 
-from c.NodeTypes import StartNode, ProgNode
+from c.NodeTypes import *
 
 testsFolder = 'tests/'
 tokens = list(tokenize(testsFolder + 'polynomial.src'))
@@ -91,7 +90,7 @@ def match(token):
         return False
     elif tokens[tokenIndex][0] == token:
         if tokens[tokenIndex][0] in terminal:
-            LeafNode(tokens[tokenIndex])
+            pass#LeafNode(tokens[tokenIndex])
         stackTerminalChecker()
         tokenIndex = tokenIndex + 1
         return True
@@ -325,10 +324,23 @@ def _assign_stat_tail():
 
 
 def _class_declaration():
+    class_declaration = semantic_stack.pop()
+
     stackChecker()
     if tokens[tokenIndex][0] in ['class']:
         # return match('class') and match('id') and _inherits() and match(
         #     'lcurbr') and _class_declaration_body() and match('rcurbr') and match('semi') and _class_declaration()
+
+        class_declaration = ClassDeclNode()
+        semantic_stack.append(class_declaration)
+
+        class_declaration_body = classDeclBodyNode()
+        semantic_stack.append(class_declaration_body)
+
+        inherits = inheritNode()
+        semantic_stack.append(inherits)
+
+
 
         if match('class'):
             if match('id'):
@@ -944,6 +956,12 @@ def _indice_rep():
 
 
 def _inherits():
+    inherits = semantic_stack.pop()
+
+    nested_id = NestedIdNode()
+    semantic_stack.append(nested_id)
+
+
     stackChecker()
     if tokens[tokenIndex][0] in ['inherits']:
         # return match('inherits') and match('id') and _nested_id()
@@ -1043,9 +1061,14 @@ def _prog():
     if tokens[tokenIndex][0] in ['class', 'func', 'main']:
         # return _class_declaration() and _func_def() and match('main') and _func_body()
 
+        func_body = funcBodyNode()
+        semantic_stack.append(func_body)
 
+        func_def = funcDefNode()
+        semantic_stack.append(func_def)
 
-
+        class_declaration = ClassDeclNode()
+        semantic_stack.append(class_declaration)
 
         if _class_declaration():
             stackChecker()
@@ -1053,6 +1076,7 @@ def _prog():
                 stackChecker()
                 if match('main'):
                     if _func_body():
+                        Node.make_familly(ProgNode(), [class_declaration, func_def, func_body])
                         stackChecker()
                         return True
                     else:
@@ -1082,10 +1106,18 @@ def _start():
 
 
 def _stat_block():
+
+    stat_block = semantic_stack.pop()
+
+
     stackChecker()
     if tokens[tokenIndex][0] in ['id', 'lcurbr', 'if', 'while', 'read', 'write', 'return', 'break', 'continue']:
         # if match('lcurbr') and _statement_list() and match('rcurbr'):
         #     return True
+
+        stat_block = StatBlockNode()
+        semantic_stack.append(stat_block)
+
         if match('lcurbr'):
             if _statement_list():
                 stackChecker()
@@ -1095,6 +1127,8 @@ def _stat_block():
                     return False
             else:
                 return False
+
+
         elif _statement():
             stackChecker()
             return True

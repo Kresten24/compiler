@@ -3,22 +3,20 @@ from c.constants.terminals import TerminalEnum
 
 
 class StartNode(Node):
-    def __init__(self, prog):
+    def __init__(self, prog=None):
         self.prog = prog
 
 
 class ProgNode(Node):
-    def __init__(self, classDecl, funcDef, funcBody):
+    def __init__(self, classDecl=None, funcDef=None, funcBody=None):
         self.classDecl = classDecl
         self.funcDef = funcDef
         self.funcBody = funcBody
         self.main = TerminalNode(TerminalEnum._main.value)
 
 class ClassDeclNode(Node):
-    def __init__(self, inherit, classDeclBody, classDrcl):
-        self.inherit = inherit
-        self.classDeclBody = classDeclBody
-        self.classDrcl = classDrcl
+    def __init__(self, inherit=None, classDeclBody=None, classDrcl=None):
+        super().__init__()
 
 class VisibilityNode(Node):
     pass
@@ -97,6 +95,21 @@ class fParamsTailNode(Node):
 
 class aParamsTailNode(Node):
     pass
+
+class inheritNode(Node):
+    pass
+
+class classDeclBodyNode(Node):
+    pass
+
+class NestedIdNode(Node):
+    pass
+
+class StatBlockNode(Node):
+    pass
+
+
+
 
 
 class TerminalNode(Node):
