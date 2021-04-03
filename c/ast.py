@@ -1,14 +1,17 @@
-
+import copy
 
 
 
 class Node:
-
+    id = 0
     def __repr__(self):
-        return f'{self.id}[label={type(self).__name__}'
+        return f'{self.id}[label={type(self).__name__}]'
 
     def __init__(self, data=None):
+        self.id = Node.id
+        Node.id = Node.id + 1
 
+        self.disc = False
         self.data = data
         self.parent = None
         self.left_most_sibiling = self  # left sibiling
@@ -65,8 +68,7 @@ class Node:
 
         return node
 
-    id = 0
-    def dfs(node, callback=None):
+    def _dfs(node, callback=None):
         """
         procedure DFS(G, v) is
             label v as discovered
@@ -79,27 +81,31 @@ class Node:
         self.right_sibiling = None  # right sibiling
         self.left_most_child = None
         """
-        if callback is not None:
+        if callback is not None and not node.disc:
+            node.disc = True
             callback(node)
 
-        while node.left_most_child is not None:
-            node = node.left_most_child
-            Node.dfs(node, callback)
         while node.right_sibiling is not None:
             node = node.right_sibiling
             Node.dfs(node, callback)
+        while node.left_most_child is not None:
+            node = node.left_most_child
+            Node.dfs(node, callback)
+
+    def dfs(node, callback=None):
+        node = copy.deepcopy(node)
+        Node._dfs(node, callback)
+
+
 
     def printTree(self):
+        def printParentRelationshipIds(node):
+            if node.parent is not None:
+                print(f'{node.parent.id}->{node.id}')
 
-        def addId(node):
-            node.id = Node.id
-            Node.id = Node.id + 1
 
-        Node.dfs(self, addId)
         Node.dfs(self, print)
-
-    def setId(node, id):
-        node.id = id
+        Node.dfs(self, printParentRelationshipIds)
 
 
 
