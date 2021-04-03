@@ -571,6 +571,8 @@ def _factor():
 
 
 def _func_body():
+    func_body = semantic_stack.pop()
+
     stackChecker()
     method_body_var = methodBodyNode()
     semantic_stack.append(method_body_var)
@@ -647,6 +649,8 @@ def _func_declaration_tail():
 
 
 def _func_def():
+    func_def = semantic_stack.pop()
+
     function = functionNode()
     semantic_stack.append(function)
 
@@ -1086,8 +1090,13 @@ def _prog():
                 stackChecker()
                 if match('main'):
                     if _func_body():
+                        class_declaration = semantic_stack.pop()
+                        func_def = semantic_stack.pop()
+                        func_body = semantic_stack.pop()
+
                         progNode = ProgNode()
                         familly = Node.make_familly(progNode, [class_declaration, func_def, func_body])
+                        semantic_stack.append(familly)
                         stackChecker()
                         return True
                     else:
@@ -1152,10 +1161,16 @@ def _stat_block():
 
 
 def _statement():
+
+    statement = semantic_stack.pop()
+
     stackChecker()
     if tokens[tokenIndex][0] in ['id', 'if', 'while', 'read', 'write', 'return', 'break', 'continue']:
         # if _func_or_assign_stat() and match('semi'):
         #     return True
+
+
+
         if _func_or_assign_stat():
             stackChecker()
             if match('semi'):
@@ -1282,9 +1297,20 @@ def _statement():
 
 
 def _statement_list():
+
+    statement_list = semantic_stack.pop()
+
     stackChecker()
     if tokens[tokenIndex][0] in ['id', 'if', 'while', 'read', 'write', 'return', 'break']:
         # return _statement() and _statement_list()
+
+        statement_list = statementListNode()
+        semantic_stack.append(statement_list)
+
+
+        statement = statementNode()
+        semantic_stack.append(statement)
+
         if _statement():
             stackChecker()
             if _statement_list():
@@ -1301,9 +1327,19 @@ def _statement_list():
 
 
 def _term():
+
+    term = semantic_stack.pop()
+
     stackChecker()
     if tokens[tokenIndex][0] in ['plus', 'minus', 'id', 'intnum', 'floatnum', 'stringlit', 'lpar', 'not', 'qm']:
         # return _factor() and _term_tail()
+
+        term_tail = termTailNode()
+        semantic_stack.append(term_tail)
+
+        factor = factorNode()
+        semantic_stack.append(factor)
+
         if _factor():
             stackChecker()
             if _term_tail():
@@ -1316,8 +1352,25 @@ def _term():
 
 
 def _term_tail():
+
+    term_tail = semantic_stack.pop()
+
+
     stackChecker()
     if tokens[tokenIndex][0] in ['mult', 'div', 'and']:
+
+
+        term_tail = termTailNode()
+        semantic_stack.append(term_tail)
+
+        factor = factorNode()
+        semantic_stack.append(factor)
+
+
+        multi_op = MultOpNode()
+        semantic_stack.append(multi_op)
+
+
         # return _multi_op() and _factor() and _term_tail()
         if _multi_op():
             stackChecker()
@@ -1340,9 +1393,20 @@ def _term_tail():
 
 
 def _var_declaration():
+
+    var_declaration = semantic_stack.pop()
+
     stackChecker()
     if tokens[tokenIndex][0] in ['id', 'integer', 'float', 'string']:
         # return _type() and match('id') and _array_size_rept() and match('semi')
+
+        array_size_rept = arraySizeNode()
+        semantic_stack.append(array_size_rept)
+
+
+        type = typeNode()
+        semantic_stack.append(type)
+
         if _type():
             stackChecker()
             if match('id'):
@@ -1363,8 +1427,22 @@ def _var_declaration():
 
 
 def _var_declaration_rep():
+
+
+    var_declaration_rep = semantic_stack.pop()
+
+
     stackChecker()
     if tokens[tokenIndex][0] in ['id', 'integer', 'float', 'string']:
+
+        var_declaration_rep = varDeclRepNode()
+        semantic_stack.append(var_declaration_rep)
+
+
+        var_declaration = varDeclNode()
+        semantic_stack.append(var_declaration)
+
+
         # return _var_declaration() and _var_declaration_rep()
         if _var_declaration():
             stackChecker()
@@ -1382,8 +1460,17 @@ def _var_declaration_rep():
 
 
 def _variable():
+
+
+    variable = semantic_stack.pop()
+
     stackChecker()
     if tokens[tokenIndex][0] in ['id']:
+
+
+        variable_idnest = variableIdNestNode()
+        semantic_stack.append(variable_idnest)
+
         # return match('id')and _variable_idnest()
         if match('id'):
             if _variable_idnest():
@@ -1397,7 +1484,19 @@ def _variable():
 
 def _variable_idnest():
     stackChecker()
+
+    variable_idnest = semantic_stack.pop()
+
+
     if tokens[tokenIndex][0] in ['lsqrbr', 'dot']:
+
+        variable_idnest_tail = variableIdNestTailNode()
+        semantic_stack.append(variable_idnest_tail)
+
+        indice_rep = indiceRepNode()
+        semantic_stack.append(indice_rep)
+
+
         # return _indice_rep() and _variable_idnest_tail()
         if _indice_rep():
             stackChecker()
@@ -1412,7 +1511,15 @@ def _variable_idnest():
 
 def _variable_idnest_tail():
     stackChecker()
+
+    variable_id_nest_tail = semantic_stack.pop()
+
     if tokens[tokenIndex][0] in ['dot']:
+
+
+        variable_idnest = variableIdNestNode()
+        semantic_stack.append(variable_idnest)
+
         # return match('dot') and match('id') and _variable_idnest()
         if match('dot'):
             if match('id'):
@@ -1434,6 +1541,7 @@ def _variable_idnest_tail():
 #################################################################
 semantic_stack = []
 if parse():
+    semantic_stack[0].printTree()
     derivation_file.write('success')
     print('success')
 else:

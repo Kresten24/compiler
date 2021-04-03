@@ -112,14 +112,29 @@ class inheritNode(Node):
 class classDeclBodyNode(Node):
     pass
 
-class NestedIdNode(Node):
+class nestedIdNode(Node):
     pass
 
-class StatBlockNode(Node):
+class statBlockNode(Node):
     pass
 
+class variableIdNestNode(Node):
+    pass
 
+class variableIdNestTailNode(Node):
+    pass
 
+class indiceRepNode(Node):
+    pass
+
+class varDeclRepNode(Node):
+    pass
+
+class varDeclNode(Node):
+    pass
+
+class termTailNode(Node):
+    pass
 
 
 class TerminalNode(Node):

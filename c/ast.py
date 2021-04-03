@@ -1,10 +1,14 @@
-global i
-i = 0
+
+
 
 
 class Node:
 
+    def __repr__(self):
+        return f'{self.id}[label={type(self).__name__}'
+
     def __init__(self, data=None):
+
         self.data = data
         self.parent = None
         self.left_most_sibiling = self  # left sibiling
@@ -60,6 +64,43 @@ class Node:
             node.adopt_children(list_children_nodes[0])
 
         return node
+
+    id = 0
+    def dfs(node, callback=None):
+        """
+        procedure DFS(G, v) is
+            label v as discovered
+            for all directed edges from v to w that are in G.adjacentEdges(v) do
+                if vertex w is not labeled as discovered then
+                    recursively call DFS(G, w)
+
+
+        self.left_most_sibiling = self  # left sibiling
+        self.right_sibiling = None  # right sibiling
+        self.left_most_child = None
+        """
+        if callback is not None:
+            callback(node)
+
+        while node.left_most_child is not None:
+            node = node.left_most_child
+            Node.dfs(node, callback)
+        while node.right_sibiling is not None:
+            node = node.right_sibiling
+            Node.dfs(node, callback)
+
+    def printTree(self):
+
+        def addId(node):
+            node.id = Node.id
+            Node.id = Node.id + 1
+
+        Node.dfs(self, addId)
+        Node.dfs(self, print)
+
+    def setId(node, id):
+        node.id = id
+
 
 
 #################################################################

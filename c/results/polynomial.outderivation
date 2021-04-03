@@ -1,0 +1,10 @@
+['START', '$']
+['Prog', '$']
+['ClassDecl', 'FuncDef', 'main', 'FuncBody', '$']
+['class', 'id', 'Inherit', 'lcurbr', 'ClassDeclBody', 'rcurbr', 'semi', 'ClassDecl', 'FuncDef', 'main', 'FuncBody', '$']
+['class', 'id', 'Inherit', 'lcurbr', 'ClassDeclBody', 'rcurbr', 'semi', 'ClassDecl', 'FuncDef', 'main', 'FuncBody', '$']
+['class', 'id', 'Inherit', 'lcurbr', 'ClassDeclBody', 'rcurbr', 'semi', 'ClassDecl', 'FuncDef', 'main', 'FuncBody', '$']
+['class', 'id', 'inherits', 'id', 'NestedId', 'lcurbr', 'ClassDeclBody', 'rcurbr', 'semi', 'ClassDecl', 'FuncDef', 'main', 'FuncBody', '$']
+['class', 'id', 'inherits', 'id', 'NestedId', 'lcurbr', 'ClassDeclBody', 'rcurbr', 'semi', 'ClassDecl', 'FuncDef', 'main', 'FuncBody', '$']
+['class', 'id', 'inherits', 'id', 'NestedId', 'lcurbr', 'ClassDeclBody', 'rcurbr', 'semi', 'ClassDecl', 'FuncDef', 'main', 'FuncBody', '$']
+success
