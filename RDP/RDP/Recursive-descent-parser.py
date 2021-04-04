@@ -349,14 +349,12 @@ def parse():
     # Es = Node.makeNode()
     # nodes.append(Es)
 
-    root = Tree('root')
 
-    Es = Tree('Es');
-    root.children = [Es]
 
-    if E(Es):  # Es
-        print(root.children)
-        print(Es.children)
+    Es = Node('es')
+    stack.append(Es)
+
+    if E():  # Es
 
         reverseStack()
         # if (stack[-1] == '$'):
