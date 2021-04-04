@@ -1,4 +1,7 @@
 main
 {
-
+var{
+    integer a;
+    }
+    a = 1;
 }

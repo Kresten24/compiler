@@ -5,7 +5,7 @@ import copy
 class Node:
     id = 0
     def __repr__(self):
-        return f'{self.id}[label="{self.name}""{self.data}"]'
+        return f'{self.id}[label="{self.name}{self.data}"]'
 
     def __init__(self, data=None, name=None):
         self.id = Node.id

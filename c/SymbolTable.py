@@ -39,9 +39,24 @@ class SymbolTable:
 
          return repr
 
-symbolTable = SymbolTable()
-symbolTable.insert(SymbolTableEntry('main', 'func', 'func', None))
-symbolTable.insert(SymbolTableEntry('adsa', 'ergerg', 'ergrg', None))
-symbolTable.insert(SymbolTableEntry('maiergegn', 'erg', 'erggrerg', None))
+_global = SymbolTable()
+bubbleSort = SymbolTable()
+printArray = SymbolTable()
+main = SymbolTable()
 
-print(symbolTable)
+_global.insert(SymbolTableEntry('function', 'bubbleSort', '(integer[],integer):void', bubbleSort))
+_global.insert(SymbolTableEntry('function', 'printArray', '(integrer[],integer):void', printArray))
+_global.insert(SymbolTableEntry('function', 'main', '():', main))
+
+
+bubbleSort.insert(SymbolTableEntry('local', 'n', 'integer', None))
+bubbleSort.insert(SymbolTableEntry('local', 'i', 'integer', None))
+bubbleSort.insert(SymbolTableEntry('local', 'j', 'integer', None))
+bubbleSort.insert(SymbolTableEntry('local', 'temp', 'integer', None))
+
+printArray.insert(SymbolTableEntry('local', 'n', 'integer', None))
+printArray.insert(SymbolTableEntry('local', 'i', 'integer', None))
+
+main.insert(SymbolTableEntry('local', 'arr', 'integer[7]', None))
+
+print(_global)

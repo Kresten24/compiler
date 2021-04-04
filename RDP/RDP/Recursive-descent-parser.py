@@ -19,7 +19,7 @@ _F2 = ['1']
 
 global s
 # s = list(input())
-s = list('1+1*1$')
+s = list('1*1+1$')
 global i
 i = 0
 
