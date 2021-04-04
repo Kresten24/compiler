@@ -5,12 +5,13 @@ import copy
 class Node:
     id = 0
     def __repr__(self):
-        return f'{self.id}[label={type(self).__name__}]'
+        return f'{self.id}[label={self.name}]'
 
-    def __init__(self, data=None):
+    def __init__(self, data=None, name=None):
         self.id = Node.id
         Node.id = Node.id + 1
 
+        self.name = name
         self.disc = False
         self.data = data
         self.parent = None

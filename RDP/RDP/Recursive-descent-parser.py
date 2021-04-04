@@ -163,7 +163,9 @@ def F():  # Fs
             if (E()):
                 stackChecker()
                 if (match(")")):
-                    Fs = semantic_stack.pop() #pop(Es)
+                    Es = semantic_stack.pop() #pop(Es)
+                    Es.name = 'Fs'
+
                     return True
                 else:
                     return False
@@ -188,10 +190,14 @@ def F():  # Fs
 def Tx():  # Fi, Txs
     # if not skipErrors(['*', 'epsilon'], ['+', '$', ')']):
     #     return False
-
-
     Txs = semantic_stack.pop() #pop(Txs)
-    Fi = semantic_stack.pop() #pop(Fs)
+
+    Fs = semantic_stack.pop() #pop(Fs)
+    Fs.name = 'Fi'
+    Fi = Fs
+
+
+
 
     stackChecker()
     if s[i] in [Operator.mult.value]:
@@ -207,7 +213,7 @@ def Tx():  # Fi, Txs
                 stackChecker()
                 if (Tx()):
 
-                    Txs = Node.make_familly(Node(Operator.mult.value), [Fi,Txs2])
+                    Txs = Node.make_familly(Node(Operator.mult.value), [Fi,semantic_stack.pop()])
                     semantic_stack.append(Txs)
 
                     stackChecker()
@@ -220,7 +226,7 @@ def Tx():  # Fi, Txs
         else:
             return False
     elif s[i] in ['+', ')', '$']:
-
+        Fi.name = 'Txs'
         Txs = Fi
         semantic_stack.append(Txs)
 
@@ -249,7 +255,10 @@ def T():  # Ts
             if (Tx()):
                 stackChecker()
 
-                Ts = semantic_stack.pop() #pop(Txs)
+                Txs = semantic_stack.pop() #pop(Txs)
+                Txs.name = 'Ts'
+
+                Ts = Txs
                 semantic_stack.append(Ts)
 
                 return True
@@ -262,8 +271,10 @@ def T():  # Ts
 def Ex():  # Ti, Exs
     # if not skipErrors(['+', 'epsilon'], ['$', ')']):
     #     return False
+    Ts = semantic_stack.pop() #Ts
+    Ts.name = 'Ti'
 
-    Ti = semantic_stack.pop() #Ts
+    Ti = Ts
     Exs = semantic_stack.pop() #Exs
 
 
@@ -281,7 +292,7 @@ def Ex():  # Ti, Exs
                 stackChecker()
                 if (Ex()):
 
-                    Exs = Node.make_familly(Node(Operator.plus.value), [Ti, Ex2s])
+                    Exs = Node.make_familly(Exs, [Ti, semantic_stack.pop()])
                     semantic_stack.append(Exs)
 
                     stackChecker()
@@ -294,7 +305,7 @@ def Ex():  # Ti, Exs
         else:
             return False
     elif s[i] in [')', '$']:
-
+        Ti.name = 'Exs'
         Exs = Ti
         semantic_stack.append(Exs)
 
@@ -325,7 +336,10 @@ def E():  # Es
             stackChecker()
             if (Ex()):
 
-                Es = semantic_stack.pop() #pop(Exs)
+                Exs = semantic_stack.pop() #pop(Exs)
+                Exs.name = 'Es'
+
+                Es = Exs
                 semantic_stack.append(Es)
 
                 stackChecker()
