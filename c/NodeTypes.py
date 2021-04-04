@@ -1,5 +1,5 @@
-from c.ast import Node
-from c.constants.terminals import TerminalEnum
+from ast import Node
+from constants.terminals import TerminalEnum
 
 
 class StartNode(Node):

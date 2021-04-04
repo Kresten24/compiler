@@ -2,7 +2,7 @@ from lexer import tokenize
 from constants.terminals import terminal, non_terminals
 from constants.grammar import my_grammar
 
-from c.NodeTypes import *
+from NodeTypes import *
 
 testsFolder = 'tests/'
 tokens = list(tokenize(testsFolder + 'polynomial.src'))

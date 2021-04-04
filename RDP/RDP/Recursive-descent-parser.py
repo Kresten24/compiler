@@ -1,6 +1,7 @@
 from TokenTypes import Operator, IntNum
 from ast import Node
 from parseTree import Tree
+from NodeTypes import *
 
 print("Recursive Desent Parsing For following grammar\n")
 print("E->TE'\nE'->+TE'/@\nT->FT'\nT'->*FT'/@\nF->(E)/1/0\n")
@@ -150,19 +151,19 @@ def F():  # Fs
     # if not skipErrors(['0', '1', '('], ['*', '+', '$', ')']):
     #     return False
 
-    # Fs = nodes.pop()
+    Fs = semantic_stack.pop() #Fs
 
     stackChecker()
     if s[i] in ['(']:
 
-        # Es = Node.makeNode()
-        # nodes.append(Es)
+        Es = EsNode()
+        semantic_stack.append(Es)
 
         if (match("(")):
             if (E()):
                 stackChecker()
                 if (match(")")):
-                    # Fs = nodes.pop()
+                    Fs = semantic_stack.pop() #pop(Es)
                     return True
                 else:
                     return False
@@ -170,15 +171,15 @@ def F():  # Fs
                 return False
     elif s[i] in ['1']:
         if (match("1")):
-            # Fs = Node.makeNode(1)
-            # nodes.append(Fs)
+            Fs = FsNode(1)
+            semantic_stack.append(Fs)
             # Fs = Node.makeNode(IntNum.intnum.value)
-            # dict_of_Nodes['Fs'] = Node.makeNode(IntNum.intnum.value)
             return True
     elif s[i] in ['0']:
         if (match("0")):
+            Fs = FsNode(0)
+            semantic_stack.append(Fs)
             # Fs = Node.makeNode(IntNum.intnum.value)
-            # dict_of_Nodes['Fs'] = Node.makeNode(IntNum.intnum.value)
             return True
     else:
         return False
@@ -188,28 +189,28 @@ def Tx():  # Fi, Txs
     # if not skipErrors(['*', 'epsilon'], ['+', '$', ')']):
     #     return False
 
-    #
-    # Txs = nodes.pop()
-    # Fi = nodes.pop()
+
+    Txs = semantic_stack.pop() #pop(Txs)
+    Fi = semantic_stack.pop() #pop(Fs)
 
     stackChecker()
     if s[i] in [Operator.mult.value]:
 
-        # Fs = Node.makeNode()
-        # Tx2s = Node.makeNode()
-        # nodes.append(Tx2s)
-        # nodes.append(Fs)
+        Fs = FsNode()
+        Txs2 = TxsNode()
+
+        semantic_stack.append(Txs2)
+        semantic_stack.append(Fs)
 
         if (match(Operator.mult.value)):
             if (F()):
                 stackChecker()
                 if (Tx()):
-                    # Txs = Node.make_familly(Operator.mult.value, [Fs, Tx2s])
-                    # dict_of_Nodes['Txs'] = Node.make_familly(Operator.mult.value, [Fs, Tx2s])
-                    stackChecker()
 
-                    # Txs = Node.make_familly(Operator.mult, [Fi, Tx2s])
-                    # nodes.append(Txs)
+                    Txs = Node.make_familly(Node(Operator.mult.value), [Fi,Txs2])
+                    semantic_stack.append(Txs)
+
+                    stackChecker()
 
                     return True
                 else:
@@ -220,40 +221,36 @@ def Tx():  # Fi, Txs
             return False
     elif s[i] in ['+', ')', '$']:
 
-        # Txs = Fi
-        # nodes.append(Txs)
+        Txs = Fi
+        semantic_stack.append(Txs)
 
         return True
     else:
         return False
 
 
-def T(Ts):  # Ts
+def T():  # Ts
     # if not skipErrors(['0', '1', '('], ['+', '$', ')']):
     #     return False
 
-    Fs = Tree('Fs')
-    Txs = Tree('Txs')
-
-    Ts.children = [Fs,Txs]
-
-    # Ts = nodes.pop()
-
+    Ts = semantic_stack.pop() #pop(Ts)
 
     if s[i] in ['0', '1', '(']:
 
-        # Fs = Node.makeNode()
-        # Txs = Node.makeNode()
-        # nodes.append(Txs)
-        # nodes.append(Fs)
+        Fs = FsNode()
+        Txs = TxsNode()
+
+        semantic_stack.append(Txs)
+        semantic_stack.append(Fs)
+
 
         if (F()):
             stackChecker()
             if (Tx()):
                 stackChecker()
-                #
-                # Ts = nodes.pop()
-                # nodes.append(Ts)
+
+                Ts = semantic_stack.pop() #pop(Txs)
+                semantic_stack.append(Ts)
 
                 return True
             else:
@@ -262,34 +259,32 @@ def T(Ts):  # Ts
             return False
 
 
-def Ex(Ti, Exs):  # Ti, Exs
+def Ex():  # Ti, Exs
     # if not skipErrors(['+', 'epsilon'], ['$', ')']):
     #     return False
 
-    # Ti = nodes.pop()
-    # Exs = nodes.pop()
+    Ti = semantic_stack.pop() #Ts
+    Exs = semantic_stack.pop() #Exs
 
-    Ts = Tree('Ts')
-    Ex2s = Tree('EX2s')
-
-    Ex.children = [Ts, Ex2s]
 
     stackChecker()
     if s[i] in [Operator.plus.value]:
-        # Ts = Node.makeNode()
-        # Ex2s = Node.makeNode()
-        # nodes.append(Ex2s)
-        # nodes.append(Ts)
-        if (match(Operator.plus.value)):
-            if (T(Ts)):
-                stackChecker()
-                if (Ex(Ts, Ex2s)):
-                    # Exs = Node.make_familly(Operator.plus.value, [Ti, Ex2s])
-                    # dict_of_Nodes['Exs'] = Node.make_familly(Operator.plus.value, [dict_of_Nodes['Ti'], Ex2s])
-                    stackChecker()
 
-                    # Exs = Node.make_familly(Operator.plus, [Ti, Ex2s])
-                    # nodes.append(Exs)
+        Ts = TsNode()
+        Ex2s = ExsNode()
+
+        semantic_stack.append(Ex2s)
+        semantic_stack.append(Ts)
+
+        if (match(Operator.plus.value)):
+            if (T()):
+                stackChecker()
+                if (Ex()):
+
+                    Exs = Node.make_familly(Node(Operator.plus.value), [Ti, Ex2s])
+                    semantic_stack.append(Exs)
+
+                    stackChecker()
 
                     return True
                 else:
@@ -299,40 +294,39 @@ def Ex(Ti, Exs):  # Ti, Exs
         else:
             return False
     elif s[i] in [')', '$']:
-        # Exs = Ti
-        # nodes.append(Exs)
+
+        Exs = Ti
+        semantic_stack.append(Exs)
+
         return True
     else:
         return False
 
 
-def E(Es):  # Es
+def E():  # Es
     # if not skipErrors(['0', '1', '('], [')', '$']):
     #     return False
 
-    # Es = nodes.pop()
+    Es = semantic_stack.pop() #pop(Es)
 
     stackChecker()
     if s[i] in ['0', '1', '(']:
 
-        # Ts = Node.makeNode()
-        # Exs = Node.makeNode()
-        # nodes.append(Exs)
-        # nodes.append(Ts)
 
-        Ts = Tree('Ts')
-        Exs = Tree('Exs')
+        Exs = ExsNode()
+        Ts = TsNode()
+        # Exs = Node()
+        # Ts = Node()
 
-        Es.children = [Ts,Exs]
+        semantic_stack.append(Exs)
+        semantic_stack.append(Ts)
 
-        print(Es.data)
-
-        if (T(Ts)):
+        if (T()):
             stackChecker()
-            if (Ex(Ts, Exs)):
+            if (Ex()):
 
-                # Es = nodes.pop()
-                # nodes.append(Es)
+                Es = semantic_stack.pop() #pop(Exs)
+                semantic_stack.append(Es)
 
                 stackChecker()
                 return True
@@ -342,18 +336,13 @@ def E(Es):  # Es
             return False
 
 
-stack = []
+semantic_stack = []
 # nodes = []
 
 def parse():
-    # Es = Node.makeNode()
-    # nodes.append(Es)
 
-
-
-    Es = Node('es')
-    stack.append(Es)
-
+    Es = EsNode()
+    semantic_stack.append(Es)
     if E():  # Es
 
         reverseStack()
@@ -369,6 +358,7 @@ def parse():
 
 
 parse()
+semantic_stack[0].printTree()
 
 
 # (0+1)*0
