@@ -190,9 +190,11 @@ def F():  # Fs
 def Tx():  # Fi, Txs
     # if not skipErrors(['*', 'epsilon'], ['+', '$', ')']):
     #     return False
-    Txs = semantic_stack.pop() #pop(Txs)
+
 
     Fs = semantic_stack.pop() #pop(Fs)
+    Txs = semantic_stack.pop() #pop(Txs)
+
     Fs.name = 'Fi'
     Fi = Fs
 
@@ -292,7 +294,7 @@ def Ex():  # Ti, Exs
                 stackChecker()
                 if (Ex()):
 
-                    Exs = Node.make_familly(Exs, [Ti, semantic_stack.pop()])
+                    Exs = Node.make_familly(Node(Operator.plus.value), [Ti, semantic_stack.pop()])
                     semantic_stack.append(Exs)
 
                     stackChecker()
@@ -358,7 +360,7 @@ def parse():
     Es = EsNode()
     semantic_stack.append(Es)
     if E():  # Es
-
+        semantic_stack[0].printTree()
         reverseStack()
         # if (stack[-1] == '$'):
         #     print('success')
